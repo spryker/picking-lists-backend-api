@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerTest\Glue\PickingListsBackendApi\Plugin;
+namespace SprykerTest\Glue\PickingListsBackendApi\Plugin\GlueJsonApiConvention;
 
 use Codeception\Test\Unit;
 use Generated\Shared\DataBuilder\ItemBuilder;
@@ -29,6 +29,7 @@ use SprykerTest\Glue\PickingListsBackendApi\PickingListsBackendApiTester;
  * @group Glue
  * @group PickingListsBackendApi
  * @group Plugin
+ * @group GlueJsonApiConvention
  * @group PickingListItemsByPickingListsBackendResourceRelationshipPluginTest
  * Add your own group annotations below this line
  */

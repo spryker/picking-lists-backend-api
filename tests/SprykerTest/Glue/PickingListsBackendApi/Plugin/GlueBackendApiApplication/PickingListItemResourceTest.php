@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerTest\Glue\PickingListsBackendApi\Plugin;
+namespace SprykerTest\Glue\PickingListsBackendApi\Plugin\GlueBackendApiApplication;
 
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\GlueResourceMethodCollectionTransfer;
@@ -20,10 +20,11 @@ use SprykerTest\Glue\PickingListsBackendApi\PickingListsBackendApiTester;
  * @group Glue
  * @group PickingListsBackendApi
  * @group Plugin
- * @group PickingListResourceTest
+ * @group GlueBackendApiApplication
+ * @group PickingListItemResourceTest
  * Add your own group annotations below this line
  */
-class PickingListResourceTest extends Unit
+class PickingListItemResourceTest extends Unit
 {
     /**
      * @var \SprykerTest\Glue\PickingListsBackendApi\PickingListsBackendApiTester
@@ -37,11 +38,11 @@ class PickingListResourceTest extends Unit
     {
         //Act
         $type = $this->tester
-            ->createPickingListsBackendResourcePlugin()
+            ->createPickingListItemsBackendResourcePlugin()
             ->getType();
 
         //Assert
-        $this->assertSame($type, PickingListsBackendApiConfig::RESOURCE_PICKING_LISTS);
+        $this->assertSame($type, PickingListsBackendApiConfig::RESOURCE_PICKING_LIST_ITEMS);
     }
 
     /**
@@ -51,23 +52,13 @@ class PickingListResourceTest extends Unit
     {
         //Act
         $glueResourceMethodCollectionTransfer = $this->tester
-            ->createPickingListsBackendResourcePlugin()
+            ->createPickingListItemsBackendResourcePlugin()
             ->getDeclaredMethods();
 
         //Assert
         $this->assertInstanceOf(GlueResourceMethodCollectionTransfer::class, $glueResourceMethodCollectionTransfer);
 
-        $this->assertInstanceOf(
-            GlueResourceMethodConfigurationTransfer::class,
-            $glueResourceMethodCollectionTransfer->getPatch(),
-        );
-        $this->assertInstanceOf(
-            GlueResourceMethodConfigurationTransfer::class,
-            $glueResourceMethodCollectionTransfer->getGet(),
-        );
-        $this->assertInstanceOf(
-            GlueResourceMethodConfigurationTransfer::class,
-            $glueResourceMethodCollectionTransfer->getGetCollection(),
-        );
+        $patchEndpoint = $glueResourceMethodCollectionTransfer->getPatch();
+        $this->assertInstanceOf(GlueResourceMethodConfigurationTransfer::class, $patchEndpoint);
     }
 }
