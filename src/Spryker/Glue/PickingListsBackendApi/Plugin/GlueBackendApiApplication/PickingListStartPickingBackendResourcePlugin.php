@@ -13,12 +13,12 @@ use Generated\Shared\Transfer\RouteAuthorizationConfigTransfer;
 use Spryker\Glue\GlueApplication\Plugin\GlueApplication\Backend\AbstractResourcePlugin;
 use Spryker\Glue\GlueApplicationAuthorizationConnectorExtension\Dependency\Plugin\AuthorizationStrategyAwareResourceRoutePluginInterface;
 use Spryker\Glue\GlueJsonApiConventionExtension\Dependency\Plugin\JsonApiResourceInterface;
-use Spryker\Glue\PickingListsBackendApi\Controller\PickingListResourceController;
+use Spryker\Glue\PickingListsBackendApi\Controller\PickingListStartPickingResourceController;
 use Spryker\Glue\PickingListsBackendApi\PickingListsBackendApiConfig;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PickingListsBackendResourcePlugin extends AbstractResourcePlugin implements JsonApiResourceInterface, AuthorizationStrategyAwareResourceRoutePluginInterface
+class PickingListStartPickingBackendResourcePlugin extends AbstractResourcePlugin implements JsonApiResourceInterface, AuthorizationStrategyAwareResourceRoutePluginInterface
 {
     /**
      * @uses \Spryker\Zed\OauthWarehouse\Communication\Plugin\Authorization\WarehouseTokenAuthorizationStrategyPlugin::STRATEGY_NAME
@@ -36,6 +36,18 @@ class PickingListsBackendResourcePlugin extends AbstractResourcePlugin implement
      */
     public function getType(): string
     {
+        return PickingListsBackendApiConfig::RESOURCE_PICKING_LIST_START_PICKING;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @return string
+     */
+    public function getParentResourceType(): string
+    {
         return PickingListsBackendApiConfig::RESOURCE_PICKING_LISTS;
     }
 
@@ -48,7 +60,7 @@ class PickingListsBackendResourcePlugin extends AbstractResourcePlugin implement
      */
     public function getController(): string
     {
-        return PickingListResourceController::class;
+        return PickingListStartPickingResourceController::class;
     }
 
     /**
@@ -61,13 +73,9 @@ class PickingListsBackendResourcePlugin extends AbstractResourcePlugin implement
     public function getDeclaredMethods(): GlueResourceMethodCollectionTransfer
     {
         return (new GlueResourceMethodCollectionTransfer())
-            ->setGetCollection(
+            ->setPost(
                 (new GlueResourceMethodConfigurationTransfer())
-                    ->setAction('getCollectionAction'),
-            )
-            ->setGet(
-                (new GlueResourceMethodConfigurationTransfer())
-                    ->setAction('getAction'),
+                    ->setAction('postAction'),
             );
     }
 
@@ -86,7 +94,7 @@ class PickingListsBackendResourcePlugin extends AbstractResourcePlugin implement
             ->setApiMessage(PickingListsBackendApiConfig::RESPONSE_DETAILS_AUTHORIZATION_FAILED);
 
         return [
-            Request::METHOD_GET => $routeAuthorizationConfigTransfer->addStrategy(static::STRATEGY_NAME),
+            Request::METHOD_POST => $routeAuthorizationConfigTransfer->addStrategy(static::STRATEGY_NAME),
         ];
     }
 }
